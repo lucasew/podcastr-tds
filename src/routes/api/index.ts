@@ -1,7 +1,11 @@
 import express from 'express'
-import Orphanages from './orphanages'
 
 const router = express.Router()
-router.use('/orphanages', Orphanages)
+
+router.use((req, res) => {
+    res.json({
+        demo: 'hello, world'
+    })
+})
 
 export default router

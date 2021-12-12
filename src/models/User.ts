@@ -1,7 +1,9 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import ListenedModel from "./Listened";
+import PodcastModel from "./Podcast";
 
 @Entity('user')
-class UserModel {
+export default class UserModel {
     @PrimaryGeneratedColumn()
     id: number
 
@@ -11,5 +13,10 @@ class UserModel {
     @Column()
     password: string
 
-
+    @ManyToMany(type => ListenedModel, listened => listened.id)
+    listened: ListenedModel[]
+    
+    @ManyToMany(type => PodcastModel, podcast => podcast.id)
+    @JoinTable({name: "subscriptions"})
+    subscriptions: PodcastModel[]
 }

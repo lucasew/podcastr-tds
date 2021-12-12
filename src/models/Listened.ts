@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import EpisodeModel from "./Episode";
+import UserModel from "./User";
 
 @Entity('listened')
 export default class ListenedModel {
@@ -13,4 +15,10 @@ export default class ListenedModel {
 
     @UpdateDateColumn({})
     lastActivity: Date
+
+    @ManyToOne(type => UserModel, user => user.id)
+    user: UserModel
+
+    @ManyToOne(type => EpisodeModel, episode => episode.guid)
+    episode: EpisodeModel
 }
