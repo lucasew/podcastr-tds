@@ -33,6 +33,7 @@ public class SecurityConfigurationController extends WebSecurityConfigurerAdapte
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/demo/*").anonymous()
+                .antMatchers("/api-docs").anonymous()
                 .anyRequest().authenticated()
                 .and().httpBasic();
     }
