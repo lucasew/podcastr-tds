@@ -7,6 +7,9 @@ export default class UserModel {
     @PrimaryGeneratedColumn()
     id: number
 
+    @Column({default: false})
+    is_admin: boolean
+
     @Column({nullable: false, unique: true})
     username: string
 
