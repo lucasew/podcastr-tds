@@ -1,5 +1,5 @@
+import { Flex } from '@chakra-ui/react';
 import './App.css';
-import { Box, Container, Flex } from '@chakra-ui/react';
 import PlayerComponent from './components/Player';
 import RoutesPage from './routes';
 

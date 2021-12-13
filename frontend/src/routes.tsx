@@ -1,15 +1,15 @@
 import { Flex } from "@chakra-ui/react";
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom';
 import MainPage from "./pages";
+import NowPlayingPage from "./pages/NowPlaying";
 
 export default function RoutesPages() {
     return (
       <Flex flex={1} alignItems='center' justifyContent='center'>
-          <BrowserRouter>
-            <Routes>
-            <Route path="/" element={<MainPage/>}/>
-            </Routes>
-          </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage/>}/>
+          <Route path="/now-playing" element={<NowPlayingPage/>}/>
+        </Routes>
       </Flex>
     )
 }
