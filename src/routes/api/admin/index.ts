@@ -29,19 +29,7 @@ router.get('/podcasts', mustAdminAuthenticated, async () => {
     const podcasts = await getConnection().getRepository(PodcastModel).find({
         relations: ['episodes']
     })
-    Returner.json(
-        podcasts.map(p => {
-            const {
-                feed,
-                homepage,
-                icon,
-                id,
-                title,
-                episodes
-            } = p
-            return {feed, homepage, icon, id, title, episodes}
-        })
-    )
+    Returner.json(podcasts)
 })
 
 router.get('/create-user', mustAdminAuthenticated, async (req, res) => {
@@ -91,8 +79,7 @@ router.get('/create-feed', mustAdminAuthenticated, async (req, res) => {
             description: Joi.string().default(""),
             link: Joi.string(),
             published: Joi.number().integer(),
-            itunes_duration: Joi.string(),
-            itunes_image: Joi.string()
+            itunes_duration: Joi.string().default("1"),
         }).unknown(true).validate(ep)
         if (error) {
             console.log(error)
@@ -104,9 +91,9 @@ router.get('/create-feed', mustAdminAuthenticated, async (req, res) => {
             link,
             published,
             itunes_duration,
-            itunes_image,
             enclosures
         } = value
+        const image = String((value.itunes_image && value.itunes_image.src) || value.itunes_image || pod.icon)
         if (!Array.isArray(enclosures)) {
             console.log(`'${title}' does not provide audio, so it's not a podcast`)
             continue
@@ -124,7 +111,8 @@ router.get('/create-feed', mustAdminAuthenticated, async (req, res) => {
         epdb.duration = timeExpressionToNumber(itunes_duration)
         epdb.description = description
         epdb.mp3url = valid_enclosures[0].url
-        epdb.podcast = pod
+        epdb.icon = image
+        epdb.podcast = Promise.resolve(pod)
         epdb.guid = link
         const v = await getConnection().getRepository(EpisodeModel).upsert(epdb, {conflictPaths: ['guid']})
     }

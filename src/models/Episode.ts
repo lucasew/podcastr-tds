@@ -1,11 +1,10 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import ListenedModel from "./Listened";
 import PodcastModel from "./Podcast";
-import UserModel from "./User";
 
 @Entity('episode')
 export default class EpisodeModel {
-    @PrimaryGeneratedColumn('identity')
+    @PrimaryGeneratedColumn('increment')
     id: number
 
     @Column({nullable: false, unique: true})
@@ -16,6 +15,9 @@ export default class EpisodeModel {
 
     @Column({nullable: false})
     url: string
+
+    @Column({nullable: true})
+    icon: string
 
     @Column()
     description: string
@@ -29,9 +31,10 @@ export default class EpisodeModel {
     @Column({nullable: false, type: 'int'})
     duration: number
 
-    @OneToMany(type => ListenedModel, listened => listened.id, {lazy: true})
-    listeners: ListenedModel[]
+    @OneToMany(type => ListenedModel, listened => listened.episode, {lazy: true})
+    @JoinColumn()
+    listeners: Promise<ListenedModel[]>
 
-    @ManyToOne(type => PodcastModel, podcast => podcast.id, {nullable: false, lazy: true})
+    @ManyToOne(type => PodcastModel, podcast => podcast.episodes, {nullable: false, lazy: true})
     podcast: PodcastModel
 }
