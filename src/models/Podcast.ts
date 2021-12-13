@@ -1,4 +1,5 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import EpisodeModel from "./Episode";
 import ListenedModel from "./Listened";
 import UserModel from "./User";
 
@@ -19,9 +20,9 @@ export default class PodcastModel {
     @Column()
     icon: string
 
-    @ManyToMany(type => UserModel, user => user.id)
+    @ManyToMany(type => UserModel, user => user.id, {lazy: true})
     subscribers: UserModel[]
 
-    @OneToMany(type => ListenedModel, listened => listened.id)
-    listened: ListenedModel[]
+    @OneToMany(type => EpisodeModel, episode => episode.id, {lazy: true})
+    episodes: EpisodeModel[]
 }

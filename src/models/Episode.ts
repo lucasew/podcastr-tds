@@ -5,11 +5,17 @@ import UserModel from "./User";
 
 @Entity('episode')
 export default class EpisodeModel {
-    @PrimaryColumn({nullable: false, unique: true})
+    @PrimaryGeneratedColumn('identity')
+    id: number
+
+    @Column({nullable: false, unique: true})
     guid: string;
 
     @Column({nullable: false})
     title: string;
+
+    @Column({nullable: false})
+    url: string
 
     @Column()
     description: string
@@ -23,9 +29,9 @@ export default class EpisodeModel {
     @Column({nullable: false, type: 'int'})
     duration: number
 
-    @OneToMany(type => ListenedModel, listened => listened.id)
+    @OneToMany(type => ListenedModel, listened => listened.id, {lazy: true})
     listeners: ListenedModel[]
 
-    @ManyToOne(type => PodcastModel, podcast => podcast.id, {nullable: false})
+    @ManyToOne(type => PodcastModel, podcast => podcast.id, {nullable: false, lazy: true})
     podcast: PodcastModel
 }

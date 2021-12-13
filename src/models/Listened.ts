@@ -16,9 +16,9 @@ export default class ListenedModel {
     @UpdateDateColumn({})
     lastActivity: Date
 
-    @ManyToOne(type => UserModel, user => user.id)
+    @ManyToOne(type => UserModel, user => user.id, {eager: true})
     user: UserModel
 
-    @ManyToOne(type => EpisodeModel, episode => episode.guid)
+    @ManyToOne(type => EpisodeModel, episode => episode.guid, {lazy: true})
     episode: EpisodeModel
 }

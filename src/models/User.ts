@@ -16,10 +16,10 @@ export default class UserModel {
     @Column()
     password: string
 
-    @ManyToMany(type => ListenedModel, listened => listened.id)
+    @ManyToMany(type => ListenedModel, listened => listened.id, {lazy: true})
     listened: ListenedModel[]
     
-    @ManyToMany(type => PodcastModel, podcast => podcast.id)
+    @ManyToMany(type => PodcastModel, podcast => podcast.id, {eager: true})
     @JoinTable({name: "subscriptions"})
     subscriptions: PodcastModel[]
 }
