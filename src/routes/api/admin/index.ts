@@ -4,6 +4,7 @@ import { getConnection } from "typeorm";
 import { mustAdminAuthenticated } from "../../../helpers/auth";
 import Returner from "../../../helpers/Returner";
 import UserModel from "../../../models/User";
+import parseFeed from "../../../helpers/parseFeed";
 
 const router = express.Router()
 
@@ -39,6 +40,20 @@ router.get('/create-user', mustAdminAuthenticated, async (req, res) => {
         username
     } = user
     Returner.json({id, username})
+})
+
+router.get('/create-feed', mustAdminAuthenticated, async (req, res) => {
+    const { error, value } = Joi.object({
+        url: Joi.string().required()
+    })
+    if (error) {
+        Returner.badRequest(error.message)
+    }
+    const { url } = value
+    const feed = parseFeed(url)
+    Returner.json({
+        feed
+    })
 })
 
 export default router

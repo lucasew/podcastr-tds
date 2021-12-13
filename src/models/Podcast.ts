@@ -7,7 +7,7 @@ export default class PodcastModel {
     @PrimaryGeneratedColumn('increment')
     id: number
 
-    @Column({nullable: false})
+    @Column({nullable: false, unique: true})
     feed: string
 
     @Column()
