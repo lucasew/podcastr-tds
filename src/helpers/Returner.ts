@@ -25,6 +25,12 @@ const Returner = {
             message
         }
     },
+    unauthorized() {
+        throw {
+            status: 401,
+            message: "unauthorized"
+        }
+    },
     errorCode(code: number, message: string) {
         throw {
             status: code,

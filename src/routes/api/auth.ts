@@ -19,10 +19,26 @@ router.get('/login', async (req, res) => {
     const user = await getConnection().getRepository(UserModel).findOne({where: {username: value.username}})
     if (user) {
         if (user.password == value.password) {
-            Returner.json(jwtSign({uid: user.id}))
+            const { id, is_admin } = user
+            Returner.json(jwtSign({ id, is_admin }))
         }
     }
     Returner.errorCode(401, "Usuário ou senha inválido")
+})
+
+router.get('/signup', async (req, res) => {
+    const { error, value } = Joi.object({
+        username: Joi.string().regex(/[a-zA-Z0-9]*/).required(),
+        password: Joi.string().min(8).required()
+    }).validate(req.query)
+    if (error) {
+        Returner.badRequest(error.message)
+    }
+    const user = new UserModel()
+    user.is_admin = false;
+    user.username = value.username;
+    user.password = value.password;
+    await getConnection().getRepository(UserModel).insert(user)
 })
 
 export default router

@@ -1,25 +1,27 @@
 import express from "express";
 import Joi from "joi";
 import { getConnection } from "typeorm";
+import { mustAdminAuthenticated } from "../../../helpers/auth";
 import Returner from "../../../helpers/Returner";
 import UserModel from "../../../models/User";
 
 const router = express.Router()
 
-router.get('/users', async () => {
+router.get('/users', mustAdminAuthenticated, async () => {
     const users = await getConnection().getRepository(UserModel).find()
     Returner.json(
         users.map(u => {
             const {
                 id,
-                username
+                username,
+                is_admin
             } = u
-            return {id, username}
+            return {id, username, is_admin}
         })
     )
 })
 
-router.get('/create-user', async (req, res) => {
+router.get('/create-user', mustAdminAuthenticated, async (req, res) => {
     const { error, value } = Joi.object({
         username: Joi.string().regex(/[a-zA-Z0-9]*/).required(),
         password: Joi.string().min(8).required()
