@@ -113,7 +113,7 @@ router.get('/create-feed', mustAdminAuthenticated, async (req, res) => {
         epdb.description = description
         epdb.mp3url = valid_enclosures[0].url
         epdb.icon = image
-        epdb.podcast = Promise.resolve(pod)
+        epdb.podcast = pod
         epdb.guid = link
         const v = await getConnection().getRepository(EpisodeModel).upsert(epdb, {conflictPaths: ['guid']})
     }
