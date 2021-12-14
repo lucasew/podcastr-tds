@@ -1,38 +1,42 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { TypeOfExpression } from "typescript";
+import { API_BASEURL } from "../constants";
 import { Maybe } from "../utils/Maybe";
+import { useEpisode } from "./useEpisode";
 
-type PlayerState = Maybe<{
-    icon: string
-    url: string
-    author: string
-    title: string
-    length: number
-    position: number
-    item_id: number // id do podcast
-}>
-
-type PlayerContextState = {
+type PlayerContextState = Maybe<{
     jumpToItem: (id: number) => Promise<void>
     jumpToPosition: (pos: number) => Promise<void>
-    state: PlayerState
-}
+    episode: ReturnType<typeof useEpisode>
+    position: number
+}>
 
 const _PlayerContext = createContext<PlayerContextState>(null)
 
-export function PlayerContext(children: React.ReactNode) {
+type PlayerContextProps = {
+    children: ReactNode
+}
+
+export function PlayerContext(props: PlayerContextProps) {
     const [podId, setPodId] = useState<Maybe<number>>(null)
-    const [itemMetadata, setItemMetadata] = useState<PlayerState>(null)
-
+    const episode = useEpisode(podId)
+    const [position, setPosition] = useState(0)
     useEffect(() => {
-
-    }, [podId])
+        setPosition(0)
+    }, [episode])
     return (
-
+        <_PlayerContext.Provider value={{
+            episode,
+            position,
+            async jumpToItem(id: number) { setPodId(id) },
+            async jumpToPosition(pos: number) { setPosition(pos) }
+        }}>
+            {props.children}
+        </_PlayerContext.Provider>
     )
 }
 
 
 export function usePlayerState() {
-    const ret = useContext(PlayerContext)
-    PlayerContext.Provider
+    return useContext(_PlayerContext)
 }
