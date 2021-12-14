@@ -1,6 +1,6 @@
-import { IconButton } from "@chakra-ui/button";
+import { Button, IconButton } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
-import { Image, Text } from "@chakra-ui/react";
+import { Image, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
 import { decode } from 'he';
 import { useEffect, useMemo, useState } from "react";
 import { FiFastForward, FiPlay, FiRewind, FiPause } from "react-icons/fi";
@@ -67,32 +67,57 @@ export default function PlayerComponent() {
             <Text>{decode(playerEpisode?.__podcast__?.title || "* Ninguém *")}</Text>
           </Flex>
         </Flex>
-        <Box>
-          <IconButton
-            onClick={() => playerState && (playerState.player.current.currentTime -= 30)}
-            aria-label="voltar"
-            as={FiRewind}
-          />
-          <IconButton
-            onClick={() => {
-              if (!playerState) return
-              if (playerState.player.current.paused) {
-                playerState.player.current.play()
-              } else {
-                playerState.player.current.pause()
-              }
-            }}
-            aria-label="play/pause"
-            as={!playerState ? FiPlay : playerState.player.current.paused ? FiPlay : FiPause}
-            marginX="1rem"
-          />
-          <IconButton 
-            onClick={() => playerState && (playerState.player.current.currentTime += 30)}
-            aria-label="avançar"
-            as={FiFastForward}
-          />
-        </Box>
-        <Text>{playerCurrentState} (1x)</Text>
+          <Flex alignItems='center'>
+          <Box>
+            <IconButton
+              onClick={() => playerState && (playerState.player.current.currentTime -= 30)}
+              aria-label="voltar"
+              as={FiRewind}
+            />
+            <IconButton
+              onClick={() => {
+                if (!playerState) return
+                if (playerState.player.current.paused) {
+                  playerState.player.current.play()
+                } else {
+                  playerState.player.current.pause()
+                }
+              }}
+              aria-label="play/pause"
+              as={!playerState ? FiPlay : playerState.player.current.paused ? FiPlay : FiPause}
+              marginX="1rem"
+            />
+            <IconButton 
+              onClick={() => playerState && (playerState.player.current.currentTime += 30)}
+              aria-label="avançar"
+              as={FiFastForward}
+            />
+          </Box>
+          <Text marginX='1rem'>{playerCurrentState}</Text>
+          <Menu>
+            <MenuButton marginLeft='5' as={Button}>
+              {String(!playerState ? 1 : Math.floor(playerState.player.current.playbackRate * 100)/100)}x
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 0.5)}>0.5x</MenuItem>
+              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 0.75)}>0.75x</MenuItem>
+              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 1)}>1x</MenuItem>
+              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 1.25)}>1.25x</MenuItem>
+              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 1.5)}>1.5</MenuItem>
+              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 1.75)}>1.75x</MenuItem>
+              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 2)}>2x</MenuItem>
+              <MenuItem onClick={() => {
+                if (!playerState) return
+                const res = prompt("Velocidade desejada:")
+                if (!res) return;
+                const ires = parseFloat(res)
+                if (!isNaN(ires)) {
+                  playerState.player.current.playbackRate = ires
+                }
+              }}>Custom</MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
       </Flex>
     </>
   );

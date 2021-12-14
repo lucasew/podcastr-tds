@@ -1,5 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/layout";
-import { Icon, Text } from '@chakra-ui/react';
+import { Icon, Text, Image } from '@chakra-ui/react';
 import { FiPower } from 'react-icons/fi';
 import { usePlayerState } from "../hooks/PlayerContext";
 
@@ -17,8 +17,9 @@ export default function NowPlayingPage() {
         )
     }
     return (
-        <>
-            <Heading>Now playing</Heading>
-        </>
+        <Flex direction='column'>
+            <Heading>Tocando agora</Heading>
+            <Image src={playerState.episode.data.icon || playerState.episode.data.__podcast__.icon || ""} width='50vw'/>
+        </Flex>
     )
 }

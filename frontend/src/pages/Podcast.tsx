@@ -49,11 +49,14 @@ export default function PodcastPage() {
                             margin='5px'
                         >
                             <Image src={e.icon} width='100px' />
-                            <Stack alignSelf='flex-start' justifyContent='space-between'>
+                            <Stack alignSelf='flex-start' justifyContent='space-between' marginLeft='0.5rem'>
                                 <Heading
                                     width='60vw'
                                     alignSelf='flex-start'
                                     size='sm'
+                                    marginLeft='1rem'
+                                    overflow='hidden'
+                                    textOverflow='ellipsis'
                                 >{decode(e.title)}</Heading>
                                 <Text
                                     width='60vw' 
