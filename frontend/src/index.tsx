@@ -6,6 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import {BrowserRouter} from 'react-router-dom'
 import {QueryClient, QueryClientProvider} from 'react-query'
 import { PlayerContext } from './hooks/PlayerContext';
+import { LoginContext } from './hooks/LoginContext';
 
 const queryClient = new QueryClient()
 ReactDOM.render(
@@ -13,9 +14,11 @@ ReactDOM.render(
     <ChakraProvider resetCSS>
         <QueryClientProvider client={queryClient}>
           <PlayerContext>
-            <BrowserRouter>
-            <App />
-          </BrowserRouter>
+            <LoginContext>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </LoginContext>
         </PlayerContext>
       </QueryClientProvider>
     </ChakraProvider>

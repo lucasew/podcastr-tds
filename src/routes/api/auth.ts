@@ -39,6 +39,7 @@ router.get('/signup', async (req, res) => {
     user.username = value.username;
     user.password = value.password;
     await getConnection().getRepository(UserModel).insert(user)
+    Returner.json(user.id)
 })
 
 export default router

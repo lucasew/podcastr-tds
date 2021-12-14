@@ -1,10 +1,12 @@
 import { Button, IconButton } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 import { Image, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
+import e from "cors";
 import { decode } from 'he';
 import { useEffect, useMemo, useState } from "react";
 import { FiFastForward, FiPlay, FiRewind, FiPause } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { useLoginState } from "../hooks/LoginContext";
 import nop from "../hooks/nop";
 import { usePlayerState } from "../hooks/PlayerContext";
 import numberToTimeExpression from "./numberToTimeExpression";
@@ -13,6 +15,7 @@ export default function PlayerComponent() {
   const playerState = usePlayerState()
   const playerEpisode = playerState?.episode.data
   const [intervalTick, setIntervalTick] = useState(0)
+  const login = useLoginState()
   useEffect(() => {
     const interval = setInterval(() => {
       console.log('tick')
@@ -47,9 +50,9 @@ export default function PlayerComponent() {
         ))}
       </Flex>
       <Flex
-        width="100%"
         alignItems="center"
-        justifyContent="space-around"
+        justifyContent="space-between"
+        marginX='1rem'
         flexWrap="wrap"
       >
         <Flex
@@ -67,7 +70,7 @@ export default function PlayerComponent() {
             <Text>{decode(playerEpisode?.__podcast__?.title || "* Ninguém *")}</Text>
           </Flex>
         </Flex>
-          <Flex alignItems='center'>
+        <Flex alignItems='center'>
           <Box>
             <IconButton
               onClick={() => playerState && (playerState.player.current.currentTime -= 30)}
@@ -93,6 +96,8 @@ export default function PlayerComponent() {
               as={FiFastForward}
             />
           </Box>
+        </Flex>
+        <Flex alignItems='center'>
           <Text marginX='1rem'>{playerCurrentState}</Text>
           <Menu>
             <MenuButton marginLeft='5' as={Button}>
@@ -116,6 +121,11 @@ export default function PlayerComponent() {
                 }
               }}>Custom</MenuItem>
             </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton marginLeft={1} as={Button}>
+              {login && login?.state ? login.state.username[0].toUpperCase() : '?'}
+            </MenuButton>
           </Menu>
         </Flex>
       </Flex>
