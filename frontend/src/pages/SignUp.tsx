@@ -1,11 +1,13 @@
 import { Button, Flex, FormControl, FormLabel, Heading, Input, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useLoginState } from "../hooks/LoginContext";
+import {useNavigate} from 'react-router-dom'
 
 export default function SignUpPage() {
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const loginState = useLoginState()
+    const navigate = useNavigate()
     const toast = useToast()
     useEffect(() => {
         console.log(user, password)
@@ -52,6 +54,7 @@ export default function SignUpPage() {
                 />
             </FormControl>
             <Button onClick={handleSignUp} marginTop='1rem'>Enviar</Button>
+            <Button onClick={() => navigate('/login')} marginTop='1rem'>Já tem conta?</Button>
         </Flex>
     )
 }

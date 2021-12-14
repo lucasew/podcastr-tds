@@ -19,8 +19,8 @@ router.get('/login', async (req, res) => {
     const user = await getConnection().getRepository(UserModel).findOne({where: {username: value.username}})
     if (user) {
         if (user.password == value.password) {
-            const { id, is_admin } = user
-            Returner.json(jwtSign({ id, is_admin }))
+            const { id, is_admin, username } = user
+            Returner.json(jwtSign({ id, is_admin, username }))
         }
     }
     Returner.errorCode(401, "Usuário ou senha inválido")

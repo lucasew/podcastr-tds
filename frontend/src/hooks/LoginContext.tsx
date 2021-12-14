@@ -36,7 +36,7 @@ export function LoginContext(props: LoginContextProps) {
             setJwt(() => null)
         }
         try {
-            const decoded = atob(parts[2])
+            const decoded = atob(parts[1])
             console.log(decoded)
             setState(JSON.parse(decoded))
         } catch {

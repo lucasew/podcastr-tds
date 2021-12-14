@@ -10,6 +10,8 @@ import { useLoginState } from "../hooks/LoginContext";
 import nop from "../hooks/nop";
 import { usePlayerState } from "../hooks/PlayerContext";
 import numberToTimeExpression from "../utils/numberToTimeExpression";
+import PlayerSpeedButtonComponent from "./PlayerSpeedButton";
+import UserMenuComponent from "./UserMenu";
 
 export default function PlayerComponent() {
   const playerState = usePlayerState()
@@ -99,34 +101,8 @@ export default function PlayerComponent() {
         </Flex>
         <Flex alignItems='center'>
           <Text marginX='1rem'>{playerCurrentState}</Text>
-          <Menu>
-            <MenuButton marginLeft='5' as={Button}>
-              {String(!playerState ? 1 : Math.floor(playerState.player.current.playbackRate * 100)/100)}x
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 0.5)}>0.5x</MenuItem>
-              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 0.75)}>0.75x</MenuItem>
-              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 1)}>1x</MenuItem>
-              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 1.25)}>1.25x</MenuItem>
-              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 1.5)}>1.5</MenuItem>
-              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 1.75)}>1.75x</MenuItem>
-              <MenuItem onClick={() => playerState && (playerState.player.current.playbackRate = 2)}>2x</MenuItem>
-              <MenuItem onClick={() => {
-                if (!playerState) return
-                const res = prompt("Velocidade desejada:")
-                if (!res) return;
-                const ires = parseFloat(res)
-                if (!isNaN(ires)) {
-                  playerState.player.current.playbackRate = ires
-                }
-              }}>Custom</MenuItem>
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton marginLeft={1} as={Button}>
-              {login && login?.state ? login.state.username[0].toUpperCase() : '?'}
-            </MenuButton>
-          </Menu>
+          <PlayerSpeedButtonComponent />
+          <UserMenuComponent />
         </Flex>
       </Flex>
     </>
