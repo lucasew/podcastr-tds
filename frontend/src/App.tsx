@@ -6,7 +6,9 @@ import RoutesPage from './routes';
 function App() {
   return (
     <Flex height='100vh' direction='column'>
-      <RoutesPage/>
+      <Flex flex={1} height='calc(100vh - 2rem)' overflowX='hidden' overflowY='scroll'>
+        <RoutesPage/>
+      </Flex>
       <PlayerComponent />
     </Flex>
   );

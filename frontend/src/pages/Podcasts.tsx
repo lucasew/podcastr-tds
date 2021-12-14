@@ -3,7 +3,7 @@ import {Flex, Heading, Spinner, Image, Text, Button} from '@chakra-ui/react'
 import { Maybe } from "../utils/Maybe"
 import {Link} from 'react-router-dom'
 
-export default function PodcastPage() {
+export default function PodcastsPage() {
     const podcasts = useApiEndpoint<{
         feed: string,
         homepage: string,
