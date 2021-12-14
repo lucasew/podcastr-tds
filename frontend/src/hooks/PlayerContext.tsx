@@ -1,6 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { TypeOfExpression } from "typescript";
-import { API_BASEURL } from "../constants";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { Maybe } from "../utils/Maybe";
 import { useEpisode } from "./useEpisode";
 
@@ -28,7 +26,7 @@ export function PlayerContext(props: PlayerContextProps) {
         <_PlayerContext.Provider value={{
             episode,
             position,
-            async jumpToItem(id: number) { setPodId(id) },
+            async jumpToItem(id: number) { console.log(id); setPodId(id) },
             async jumpToPosition(pos: number) { setPosition(pos) }
         }}>
             {props.children}

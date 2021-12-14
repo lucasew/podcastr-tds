@@ -1,7 +1,7 @@
 import { Flex, Heading } from "@chakra-ui/layout";
-import {Icon, NumberInput, Text} from '@chakra-ui/react'
+import { Icon, Text } from '@chakra-ui/react';
+import { FiPower } from 'react-icons/fi';
 import { usePlayerState } from "../hooks/PlayerContext";
-import {FiPower} from 'react-icons/fi'
 
 export default function NowPlayingPage() {
     const playerState = usePlayerState()

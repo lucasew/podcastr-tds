@@ -1,22 +1,24 @@
 import { Image } from '@chakra-ui/image'
-import {Button, Text} from '@chakra-ui/react'
-import { Box, Center, Flex, Heading, HStack, Stack } from '@chakra-ui/layout'
+import { Flex, Heading, HStack, Stack } from '@chakra-ui/layout'
+import { Button, Text } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
+import { decode } from 'he'
 import { useEffect } from 'react'
-import {useParams, useNavigate} from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { usePlayerState } from '../hooks/PlayerContext'
 import usePodcast from '../hooks/usePodcast'
-import {decode} from 'he'
 
 export default function PodcastPage() {
     const params = useParams()
     const navigate = useNavigate()
     const id = parseInt(String(params.id))
     const podcast = usePodcast(id)
+    const playerState = usePlayerState()
     useEffect(() => {
         if (isNaN(id)) {
             navigate("/")
         }
-    }, [])
+    }, [id, navigate])
     if (!podcast.data) {
         return (
             <Spinner />
@@ -37,7 +39,9 @@ export default function PodcastPage() {
                 {podcast.data.episodes.map(e => {
                     return (
                         <HStack
+                            key={e.id}
                             as={Button}
+                            onClick={() => playerState?.jumpToItem(e.id)}
                             width='calc(90vw)'
                             boxSize='max-content'
                             alignItems='flex-start'

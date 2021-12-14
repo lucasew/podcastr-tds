@@ -1,7 +1,7 @@
+import { Button, Flex, Heading, Image, Spinner } from '@chakra-ui/react'
+import { Link } from 'react-router-dom'
 import { useApiEndpoint } from "../hooks/useApiEndpoint"
-import {Flex, Heading, Spinner, Image, Text, Button} from '@chakra-ui/react'
 import { Maybe } from "../utils/Maybe"
-import {Link} from 'react-router-dom'
 
 export default function PodcastsPage() {
     const podcasts = useApiEndpoint<{

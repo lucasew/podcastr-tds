@@ -2,7 +2,7 @@ import { IconButton } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 import { Image, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
-import { FiPlay, FiFastForward, FiRewind } from "react-icons/fi";
+import { FiFastForward, FiPlay, FiRewind } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { usePlayerState } from "../hooks/PlayerContext";
 
@@ -13,7 +13,7 @@ export default function PlayerComponent() {
     if (!playerEpisode) return 0
     const rawPercentage = playerState.position / playerEpisode.duration
     return rawPercentage > 100 ? 100 : rawPercentage
-  }, [playerState])
+  }, [playerState, playerEpisode])
   const pos = Array(100).fill(true, 0, playerPercent).fill(false, playerPercent, 100);
   const navigate = useNavigate();
   return (
