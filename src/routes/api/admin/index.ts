@@ -68,6 +68,7 @@ router.get('/create-feed', mustAdminAuthenticated, async (req, res) => {
     pod.feed = url
     pod.homepage = Array.isArray(feed.link) ? feed.link[0] : feed.link
     pod.icon = feed.image
+    pod.description = feed.description
     await getConnection().getRepository(PodcastModel).upsert(pod, {conflictPaths: ['feed']})
     pod = await getConnection().getRepository(PodcastModel).findOneOrFail({where: {
         feed: url

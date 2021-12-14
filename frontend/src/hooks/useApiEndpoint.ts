@@ -5,7 +5,7 @@ import { API_BASEURL } from "../constants";
 export function useApiEndpoint<T>(href?: string) {
     return useQuery<Maybe<T>, Error>(String(href), async () => {
         if (href === undefined) return null
-        const res = await fetch(`${API_BASEURL}/${href}`)
+        const res = await fetch(`${API_BASEURL}${href}`)
         const json = await res.json()
         if (!res.ok) {
             const {error} = json

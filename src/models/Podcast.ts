@@ -20,6 +20,9 @@ export default class PodcastModel {
     @Column()
     icon: string
 
+    @Column({nullable: true})
+    description?: string
+
     @ManyToMany(type => UserModel, user => user.listened, {lazy: true})
     @JoinTable()
     subscribers: Promise<UserModel[]>
