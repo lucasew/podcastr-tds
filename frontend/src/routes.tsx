@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { Route, Routes } from 'react-router-dom';
 import MainPage from "./pages";
+import LoginPage from "./pages/Login";
 import NowPlayingPage from "./pages/NowPlaying";
 import PodcastPage from "./pages/Podcast";
 import PodcastsPage from "./pages/Podcasts";
@@ -13,6 +14,7 @@ export default function RoutesPages() {
           <Route path="/now-playing" element={<NowPlayingPage/>}/>
           <Route path="/podcast" element={<PodcastsPage/>}/>
           <Route path="/podcast/:id" element={<PodcastPage/>}/>
+          <Route path="/login" element={<LoginPage/>}/>
         </Routes>
       </Flex>
     )

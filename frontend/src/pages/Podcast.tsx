@@ -32,10 +32,9 @@ export default function PodcastPage() {
                 </Flex>
             </Flex>
             <Flex flex={1} direction='column'>
-                <Heading marginLeft="20%">Episódios</Heading>
+                <Heading marginLeft="10%">Episódios</Heading>
                 <Flex flex={1} direction='column' alignItems='center'>
                 {podcast.data.episodes.map(e => {
-                    console.log(e.description)
                     return (
                         <HStack
                             as={Button}
