@@ -1,22 +1,44 @@
 import { IconButton } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 import { Image, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
-import { FiFastForward, FiPlay, FiRewind } from "react-icons/fi";
+import { decode } from 'he';
+import { useEffect, useMemo, useState } from "react";
+import { FiFastForward, FiPlay, FiRewind, FiPause } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import nop from "../hooks/nop";
 import { usePlayerState } from "../hooks/PlayerContext";
-import { decode } from 'he'
+import numberToTimeExpression from "./numberToTimeExpression";
 
 export default function PlayerComponent() {
   const playerState = usePlayerState()
   const playerEpisode = playerState?.episode.data
+  const [intervalTick, setIntervalTick] = useState(0)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('tick')
+      setIntervalTick(i => i + 1)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
   const playerPercent = useMemo(() => {
+    nop(intervalTick)
     if (!playerEpisode) return 0
-    const rawPercentage = playerState.position / playerEpisode.duration
-    return rawPercentage > 100 ? 100 : rawPercentage
-  }, [playerState, playerEpisode])
+    if (!playerState.player.current) return 0
+    if (isNaN(playerState.player.current.duration)) return 0
+    const currentTime = playerState.player.current.currentTime
+    const size = playerState.player.current.duration
+    return currentTime / size 
+  }, [intervalTick, playerEpisode, playerState?.player])
   const pos = Array(100).fill(true, 0, playerPercent).fill(false, playerPercent, 100);
   const navigate = useNavigate();
+  const playerCurrentState = useMemo(() => {
+    nop(intervalTick)
+    if (!playerState?.episode.data) return "- / - "
+    const pos = numberToTimeExpression(playerState.player.current.currentTime)
+    const size = numberToTimeExpression(playerState.player.current.duration)
+    console.log(pos, size)
+    return `${pos} / ${size}`
+  }, [intervalTick, playerState?.episode.data, playerState?.player]) 
   return (
     <>
       <Flex width="100%" direction="row" height="2px">
@@ -46,11 +68,31 @@ export default function PlayerComponent() {
           </Flex>
         </Flex>
         <Box>
-          <IconButton aria-label="voltar" as={FiRewind} />
-          <IconButton aria-label="play/pause" as={FiPlay} marginX="1rem" />
-          <IconButton aria-label="avançar" as={FiFastForward} />
+          <IconButton
+            onClick={() => playerState && (playerState.player.current.currentTime -= 30)}
+            aria-label="voltar"
+            as={FiRewind}
+          />
+          <IconButton
+            onClick={() => {
+              if (!playerState) return
+              if (playerState.player.current.paused) {
+                playerState.player.current.play()
+              } else {
+                playerState.player.current.pause()
+              }
+            }}
+            aria-label="play/pause"
+            as={!playerState ? FiPlay : playerState.player.current.paused ? FiPlay : FiPause}
+            marginX="1rem"
+          />
+          <IconButton 
+            onClick={() => playerState && (playerState.player.current.currentTime += 30)}
+            aria-label="avançar"
+            as={FiFastForward}
+          />
         </Box>
-        <Text>2:50/3:56 (1x)</Text>
+        <Text>{playerCurrentState} (1x)</Text>
       </Flex>
     </>
   );
