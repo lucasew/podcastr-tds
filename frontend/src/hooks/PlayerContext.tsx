@@ -3,8 +3,8 @@ import { Maybe } from "../utils/Maybe";
 import { useEpisode } from "./useEpisode";
 
 type PlayerContextState = Maybe<{
-    jumpToItem: (id: number) => Promise<void>
-    jumpToPosition: (pos: number) => Promise<void>
+    jumpToItem: (id: number) => void
+    jumpToPosition: (pos: number) => void
     episode: ReturnType<typeof useEpisode>
     position: number
 }>
@@ -26,8 +26,8 @@ export function PlayerContext(props: PlayerContextProps) {
         <_PlayerContext.Provider value={{
             episode,
             position,
-            async jumpToItem(id: number) { console.log(id); setPodId(id) },
-            async jumpToPosition(pos: number) { setPosition(pos) }
+            jumpToItem(id: number) { setPodId(id) },
+            jumpToPosition(pos: number) { setPosition(pos) }
         }}>
             {props.children}
         </_PlayerContext.Provider>

@@ -1,5 +1,5 @@
 import { Image } from '@chakra-ui/image'
-import { Flex, Heading, HStack, Stack } from '@chakra-ui/layout'
+import { Flex, Heading, Stack } from '@chakra-ui/layout'
 import { Button, Text } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { decode } from 'he'
@@ -38,9 +38,9 @@ export default function PodcastPage() {
                 <Flex flex={1} direction='column' alignItems='center'>
                 {podcast.data.episodes.map(e => {
                     return (
-                        <HStack
+                        <Button
                             key={e.id}
-                            as={Button}
+                            // as={Button}
                             onClick={() => playerState?.jumpToItem(e.id)}
                             width='calc(90vw)'
                             boxSize='max-content'
@@ -64,7 +64,7 @@ export default function PodcastPage() {
                                 >{decode(e.description)}</Text>
                                 <div/>
                             </Stack>
-                        </HStack>
+                        </Button>
                     )
                 })}
                 </Flex>

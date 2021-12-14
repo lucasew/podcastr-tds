@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { FiFastForward, FiPlay, FiRewind } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { usePlayerState } from "../hooks/PlayerContext";
+import { decode } from 'he'
 
 export default function PlayerComponent() {
   const playerState = usePlayerState()
@@ -40,8 +41,8 @@ export default function PlayerComponent() {
             marginRight="1rem"
           />
           <Flex direction="column">
-            <Heading size="sm">{playerEpisode?.title || "* Nada *"}</Heading>
-            <Text>{playerEpisode?.__podcast__?.title || "* Ninguém *"}</Text>
+            <Heading size="sm">{decode(playerEpisode?.title || "* Nada *")}</Heading>
+            <Text>{decode(playerEpisode?.__podcast__?.title || "* Ninguém *")}</Text>
           </Flex>
         </Flex>
         <Box>
