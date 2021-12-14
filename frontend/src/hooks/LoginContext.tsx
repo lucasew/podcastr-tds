@@ -49,21 +49,11 @@ export function LoginContext(props: LoginContextProps) {
             isLoggedIn,
             state,
             async login(user, password) {
-                try {
-                    const jwt = await requestAPI<string>(`/api/auth/login?username=${user}&password=${password}`)
-                    setJwt(jwt)
-                } catch (e) {
-                    alert((e as Error).message)
-                }
-                console.log('login')
+                const jwt = await requestAPI<string>(`/api/auth/login?username=${user}&password=${password}`)
+                setJwt(jwt)
             },
             async signup(user, password) {
-                try {
-                    const user_id = await requestAPI<number>(`/api/auth/login?username=${user}&password=${password}`)
-                    alert(`Novo usuário com id ${user_id} criado!`)
-                } catch (e) {
-                    alert((e as Error).message)
-                }
+                const user_id = await requestAPI<number>(`/api/auth/signup?username=${user}&password=${password}`)
                 console.log('cadastro')
             },
             signout() {

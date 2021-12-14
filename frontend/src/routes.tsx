@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import NowPlayingPage from "./pages/NowPlaying";
 import PodcastPage from "./pages/Podcast";
 import PodcastsPage from "./pages/Podcasts";
+import SignUpPage from "./pages/SignUp";
 
 export default function RoutesPages() {
     return (
@@ -15,6 +16,7 @@ export default function RoutesPages() {
           <Route path="/podcast" element={<PodcastsPage/>}/>
           <Route path="/podcast/:id" element={<PodcastPage/>}/>
           <Route path="/login" element={<LoginPage/>}/>
+          <Route path="/signup" element={<SignUpPage/>}/>
         </Routes>
       </Flex>
     )

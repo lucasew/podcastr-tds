@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useLoginState } from "../hooks/LoginContext";
 import nop from "../hooks/nop";
 import { usePlayerState } from "../hooks/PlayerContext";
-import numberToTimeExpression from "./numberToTimeExpression";
+import numberToTimeExpression from "../utils/numberToTimeExpression";
 
 export default function PlayerComponent() {
   const playerState = usePlayerState()
