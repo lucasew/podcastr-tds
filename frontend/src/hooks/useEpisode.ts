@@ -1,3 +1,4 @@
+import { AlertTitleProps } from "@chakra-ui/alert";
 import { useQuery } from "react-query";
 import { API_BASEURL } from "../constants";
 import { Maybe } from "../utils/Maybe";
@@ -13,7 +14,15 @@ export function useEpisode(id: Maybe<number>) {
             description: string,
             mp3url: string,
             pubDate: Date,
-            duration: number
+            duration: number,
+            __podcast__: {
+                id: number,
+                feed: string,
+                homepage: string,
+                title: string,
+                icon: string,
+                description: string
+            }
         }>>(
            id === null ? undefined : `/api/public/episode/${id}`
         )
