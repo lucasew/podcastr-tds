@@ -23,9 +23,11 @@ export default function PlayerComponent() {
     const len = numberToTimeExpression(playerState.length)
     return `${pos} / ${len}`
   }, [playerEpisode, playerState])
+  const playerPercent = Math.floor((playerState ? playerState.position / playerState.length : 0) * 100)
+  const pos = useMemo(() => {
+    return Array(100).fill(true, 0, playerPercent).fill(false, playerPercent, 100)
+  }, [playerPercent]);
   if (!playerState) return null
-  const playerPercent = playerState.position / playerState.length 
-  const pos = Array(100).fill(true, 0, playerPercent).fill(false, playerPercent, 100);
   return (
     <>
       <Flex width="100%" direction="row" height="2px">

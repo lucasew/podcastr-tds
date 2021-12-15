@@ -1,7 +1,7 @@
 import express from "express";
 import Joi from "joi";
 import { getConnection } from "typeorm";
-import { mustAdminAuthenticated } from "../../helpers/auth";
+import { mustAdminAuthenticated, mustAuthenticated } from "../../helpers/auth";
 import Returner from "../../helpers/Returner";
 import UserModel from "../../models/User";
 import parseFeed from "../../helpers/parseFeed";
@@ -52,7 +52,7 @@ router.get('/create-user', mustAdminAuthenticated, async (req, res) => {
     Returner.json({id, username})
 })
 
-router.get('/create-feed', mustAdminAuthenticated, async (req, res) => {
+router.get('/create-feed', mustAuthenticated, async (req, res) => {
     const { error, value } = Joi.object({
         url: Joi.string().required()
     }).unknown(true).validate(req.query)

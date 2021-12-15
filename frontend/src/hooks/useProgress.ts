@@ -1,11 +1,14 @@
 import { useToast } from "@chakra-ui/toast";
+import { useEffect } from "react";
 import { useLoginState } from "./LoginContext";
 import requestAPI from "./requestAPI";
 import { useApiEndpoint } from "./useApiEndpoint";
 
 export default function useProgress(id?: number) {
     const loginState = useLoginState()
-    const toast = useToast()
+    const toast = useToast({
+        position: 'top-right'
+    })
     const progress = useApiEndpoint<{
         isListened: boolean,
         id: number,

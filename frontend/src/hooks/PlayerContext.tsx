@@ -41,9 +41,7 @@ export function PlayerContext(props: PlayerContextProps) {
         console.log(ticker)
     }, [ticker])
     useEffect(() => {
-        if (progress.fetcher.status == 'success') {
-            console.log("buscando progresso")
-            console.log("position", progress.progress?.position)
+        if (progress.fetcher.status === 'success') {
             const position = progress.progress?.position
             if (!position) return
             audioRef.current.currentTime = position
@@ -56,8 +54,20 @@ export function PlayerContext(props: PlayerContextProps) {
         }
     }, [podId])
     function triggerProgressSave() {
+        console.log("triggerProgressSave")
         return progress.snapshot(position, length)
     }
+    useEffect(() => {
+        const handler = (e: BeforeUnloadEvent) => {
+            e.preventDefault()
+            triggerProgressSave()
+            e.returnValue = "Sair sem salvar posição?"
+            return e.returnValue
+        }
+        window.addEventListener('beforeunload', handler)
+        return () => window.removeEventListener('beforeunload', handler)
+    }, [])
+    
     return (
         <_PlayerContext.Provider value={{
             episode,
