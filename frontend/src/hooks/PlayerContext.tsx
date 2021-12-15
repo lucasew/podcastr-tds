@@ -41,12 +41,11 @@ export function PlayerContext(props: PlayerContextProps) {
         console.log(ticker)
     }, [ticker])
     useEffect(() => {
-        if (progress.fetcher.status === 'success') {
-            const position = progress.progress?.position
-            if (!position) return
+        const position = progress.progress?.position
+        if (position) {
             audioRef.current.currentTime = position
         }
-    }, [podId, progress.fetcher.status]) // eslint-disable-line
+    }, [progress?.progress?.position]) // eslint-disable-line
     useEffect(() => {
         if (podId) {
             audioRef.current.src = `${API_BASEURL}/api/public/episode/${podId}/listen`

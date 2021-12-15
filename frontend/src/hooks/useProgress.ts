@@ -1,5 +1,6 @@
 import { useToast } from "@chakra-ui/toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Maybe } from "../utils/Maybe";
 import { useLoginState } from "./LoginContext";
 import requestAPI from "./requestAPI";
 import { useApiEndpoint } from "./useApiEndpoint";
@@ -9,15 +10,41 @@ export default function useProgress(id?: number) {
     const toast = useToast({
         position: 'top-right'
     })
-    const progress = useApiEndpoint<{
+    const [progress, setProgress] = useState<Maybe<{
         isListened: boolean,
         id: number,
         lastActivity: Date,
         position: number
-    }>(id && loginState?.isLoggedIn ? `/api/position/episode/${id}?jwt=${loginState.jwt}` : undefined)
+    }>>(null)
+    useEffect(() => {
+        if (!id) return
+        if (!loginState?.jwt) return
+        requestAPI<typeof progress>(`/api/position/episode/${id}?jwt=${loginState.jwt}`)
+            .then((progress) => {
+                if (!progress) {
+                    setProgress(function () {
+                        return {
+                            isListened: false,
+                            position: 0,
+                            id: 0,
+                            lastActivity: new Date()
+                        }
+                    })
+                } else {
+                    setProgress(progress)
+                }
+            })
+            .catch((e: Error) => {
+                toast({
+                    title: "Erro ao buscar ultima posição salva",
+                    description: e,
+                    status: 'error'
+                })
+            })
+    }, [id])
     async function snapshot(position: number, length: number) {
         console.log("snapshot", id, position, length, loginState?.state?.username)
-        if (!loginState) {return}
+        if (!loginState) return
         if (!id) {
             console.log("snapshot: id vazio, abortando")
             return
@@ -43,15 +70,9 @@ export default function useProgress(id?: number) {
             })
             return n
         })
-        progress.refetch()
     }
     return {
-        progress: progress.isLoading ? null : (progress.data || {
-            isListened: false,
-            lastActivity: new Date(),
-            position: 0
-        }),
-        fetcher: progress,
+        progress,
         snapshot
     }
 }
