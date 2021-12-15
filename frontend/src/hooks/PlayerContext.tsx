@@ -51,10 +51,9 @@ export function PlayerContext(props: PlayerContextProps) {
             jumpToPosition(pos: number) { audioRef.current.currentTime = pos },
             jumpToPositionDelta(delta: number) { audioRef.current.currentTime += delta },
             togglePlayPause(state?: boolean) {
-                const s = state !== undefined ? state  : !audioRef.current.paused
-                console.log('pause', state, s)
+                const s = state || audioRef.current.paused
                 s ? audioRef.current.play() : audioRef.current.pause()
-                setTimeout(tick, 100)
+                tick()
             },
             changePlaybackSpeed(rate: number) {
                 audioRef.current.playbackRate = rate
