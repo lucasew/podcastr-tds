@@ -22,7 +22,7 @@ router.get("/episode", async (req, res) => {
             user: auth.id
         },
         order: {
-            lastActivity: 'ASC'
+            lastActivity: 'DESC'
         }
     })
     Returner.json(await Promise.all(data.map(async (e) => {
