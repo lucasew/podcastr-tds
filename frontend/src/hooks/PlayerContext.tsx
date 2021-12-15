@@ -1,13 +1,23 @@
 import React, { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { API_BASEURL } from "../constants";
 import { Maybe } from "../utils/Maybe";
+import nop from "./nop";
 import { useEpisode } from "./useEpisode";
+import useInterval from "./useInterval";
 
 type PlayerContextState = Maybe<{
     jumpToItem: (id: number) => void
     jumpToPosition: (pos: number) => void
+    jumpToPositionDelta: (delta: number) => void
+    togglePlayPause: (state?: boolean) => void
+    changePlaybackSpeed: (speed: number) => void
+    speed: number
+    isPaused: boolean,
+    position: number,
+    length: number,
+    ticker: number,
     episode: ReturnType<typeof useEpisode>
-    player: React.MutableRefObject<HTMLAudioElement>
+    // player: React.MutableRefObject<HTMLAudioElement>
 }>
 
 const _PlayerContext = createContext<PlayerContextState>(null)
@@ -20,6 +30,11 @@ export function PlayerContext(props: PlayerContextProps) {
     const [podId, setPodId] = useState<Maybe<number>>(null)
     const episode = useEpisode(podId)
     const audioRef = useRef(new Audio())
+    const position = audioRef.current.currentTime || 0
+    const length = audioRef.current.duration || 1
+    const paused = audioRef.current.paused || true
+    const speed = audioRef.current.playbackRate || 1
+    const ticker = useInterval(1000)
     useEffect(() => {
         audioRef.current.currentTime = 0
         if (podId) {
@@ -32,7 +47,19 @@ export function PlayerContext(props: PlayerContextProps) {
             episode,
             jumpToItem(id: number) { setPodId(id) },
             jumpToPosition(pos: number) { audioRef.current.currentTime = pos },
-            player: audioRef
+            jumpToPositionDelta(delta: number) { audioRef.current.currentTime += delta },
+            togglePlayPause(state?: boolean) {
+                let normState = state === undefined ? !audioRef.current.paused : state
+                normState ? audioRef.current.play() : audioRef.current.pause()
+            },
+            changePlaybackSpeed(rate: number) {
+                audioRef.current.playbackRate = rate
+            },
+            speed,
+            isPaused: paused,
+            length,
+            position,
+            ticker
         }}>
             {props.children}
         </_PlayerContext.Provider>

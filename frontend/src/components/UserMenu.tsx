@@ -1,6 +1,6 @@
-import { Button, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList } from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
+import { useNavigate } from 'react-router-dom';
 import { useLoginState } from "../hooks/LoginContext";
-import {useNavigate} from 'react-router-dom'
 
 export default function UserMenuComponent() {
     const loginState = useLoginState()

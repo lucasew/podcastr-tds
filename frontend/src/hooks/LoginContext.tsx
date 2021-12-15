@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
-import LoginPage from "../pages/Login";
 import { Maybe } from "../utils/Maybe";
 import requestAPI from "./requestAPI";
 import { withLocalStorage } from "./withLocalStorage";
@@ -32,7 +31,7 @@ export function LoginContext(props: LoginContextProps) {
     useEffect(() => {
         if (!jwt) return setState(null)
         const parts = jwt.split('.')
-        if (parts.length != 3) {
+        if (parts.length !== 3) {
             setJwt(() => null)
         }
         try {
