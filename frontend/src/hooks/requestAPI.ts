@@ -5,7 +5,7 @@ export default async function requestAPI<T>(href?: string, options?: RequestInit
     if (!href) {
         return null
     }
-    const res = await fetch(`${API_BASEURL}${href}`)
+    const res = await fetch(`${API_BASEURL}${href}`, options)
     const json = await res.json()
     if (!res.ok) {
         const {error} = json

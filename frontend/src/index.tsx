@@ -12,14 +12,14 @@ const queryClient = new QueryClient()
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider resetCSS>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <LoginContext>
           <PlayerContext>
-            <LoginContext>
               <BrowserRouter>
                 <App />
               </BrowserRouter>
-            </LoginContext>
-        </PlayerContext>
+          </PlayerContext>
+        </LoginContext>
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>,
