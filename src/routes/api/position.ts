@@ -1,6 +1,6 @@
 import express from "express";
 import Joi from "joi";
-import { getConnection } from "typeorm";
+import { getConnection, RelationCount } from "typeorm";
 import { mustAuthenticated } from "../../helpers/auth";
 import Returner from "../../helpers/Returner";
 import ListenedModel from "../../models/Listened";
@@ -10,9 +10,37 @@ import UserModel from "../../models/User";
 
 const router = express.Router()
 
-router.get("/episode", async () => {
-    const data = await getConnection().getRepository(ListenedModel).find()
-    Returner.json(data)
+router.get("/episode", async (req, res) => {
+    const {value, error} = Joi.object({
+        jwt: Joi.string()
+    }).unknown(true).validate(req.query)
+    if (error) throw error
+    const { jwt } = value 
+    const auth = handleJWT<{id: number, username: string}>(jwt)
+    const data = await getConnection().getRepository(ListenedModel).find({
+        where: {
+            user: auth.id
+        },
+        order: {
+            lastActivity: 'ASC'
+        }
+    })
+    Returner.json(await Promise.all(data.map(async (e) => {
+        const {
+            episode,
+            id,
+            isListened,
+            lastActivity,
+            position
+        } = e
+        return {
+            episode: await episode,
+            id,
+            isListened,
+            lastActivity,
+            position
+        }
+    })))
 })
 
 router.get("/episode/:id", mustAuthenticated, async (req, res) => {
