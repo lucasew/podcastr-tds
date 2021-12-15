@@ -5,7 +5,6 @@ import { useLoginState } from "../hooks/LoginContext";
 export default function UserMenuComponent() {
     const loginState = useLoginState()
     const navigate = useNavigate()
-    console.log(loginState)
     if (!loginState) return null
     return (
         <Menu>

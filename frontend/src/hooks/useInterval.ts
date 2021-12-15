@@ -10,6 +10,6 @@ export default function useInterval(ms: number) {
         return () => {
             clearInterval(interval)
         }
-    }, [])
-    return idx
+    }, [ms])
+    return [idx, incr] as [number, () => void]
 }

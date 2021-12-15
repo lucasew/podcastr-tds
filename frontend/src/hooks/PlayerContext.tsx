@@ -1,7 +1,6 @@
 import React, { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { API_BASEURL } from "../constants";
 import { Maybe } from "../utils/Maybe";
-import nop from "./nop";
 import { useEpisode } from "./useEpisode";
 import useInterval from "./useInterval";
 
@@ -32,9 +31,12 @@ export function PlayerContext(props: PlayerContextProps) {
     const audioRef = useRef(new Audio())
     const position = audioRef.current.currentTime || 0
     const length = audioRef.current.duration || 1
-    const paused = audioRef.current.paused || true
+    const paused = audioRef.current.paused
     const speed = audioRef.current.playbackRate || 1
-    const ticker = useInterval(1000)
+    const [ticker, tick] = useInterval(1000)
+    useEffect(() => {
+        console.log(ticker)
+    }, [ticker])
     useEffect(() => {
         audioRef.current.currentTime = 0
         if (podId) {
@@ -49,8 +51,10 @@ export function PlayerContext(props: PlayerContextProps) {
             jumpToPosition(pos: number) { audioRef.current.currentTime = pos },
             jumpToPositionDelta(delta: number) { audioRef.current.currentTime += delta },
             togglePlayPause(state?: boolean) {
-                let normState = state === undefined ? !audioRef.current.paused : state
-                normState ? audioRef.current.play() : audioRef.current.pause()
+                const s = state !== undefined ? state  : !audioRef.current.paused
+                console.log('pause', state, s)
+                s ? audioRef.current.play() : audioRef.current.pause()
+                setTimeout(tick, 100)
             },
             changePlaybackSpeed(rate: number) {
                 audioRef.current.playbackRate = rate

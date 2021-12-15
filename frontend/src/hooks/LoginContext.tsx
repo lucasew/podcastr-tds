@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Maybe } from "../utils/Maybe";
 import requestAPI from "./requestAPI";
 import { withLocalStorage } from "./withLocalStorage";
@@ -27,21 +27,23 @@ type LoginContextProps = {
 
 export function LoginContext(props: LoginContextProps) {
     const [jwt, setJwt] = withLocalStorage<Maybe<string>,Maybe<string>>(useState, 'jwt')(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const setJwtCb = useCallback(setJwt, [])
     const [state, setState] = useState<Maybe<{id: number, username: string, is_admin: boolean}>>(null)
     useEffect(() => {
         if (!jwt) return setState(null)
         const parts = jwt.split('.')
         if (parts.length !== 3) {
-            setJwt(() => null)
+            setJwtCb(() => null)
         }
         try {
             const decoded = atob(parts[1])
             console.log(decoded)
             setState(JSON.parse(decoded))
         } catch {
-            setJwt(() => null)
+            setJwtCb(() => null)
         }
-    }, [jwt])
+    }, [jwt, setJwtCb])
     const isLoggedIn = useMemo(() => !!state, [state])
     return (
         <_LoginContext.Provider value={{
@@ -53,7 +55,7 @@ export function LoginContext(props: LoginContextProps) {
             },
             async signup(user, password) {
                 const user_id = await requestAPI<number>(`/api/auth/signup?username=${user}&password=${password}`)
-                console.log('cadastro')
+                console.log("cadastro", user_id)
             },
             signout() {
                 setJwt(null)
