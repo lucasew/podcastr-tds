@@ -27,6 +27,9 @@ export default function UserMenuComponent() {
                 )}
                 <MenuDivider/>
                 <MenuItem onClick={() => navigate('/podcast')}>Podcasts</MenuItem>
+                {loginState.state && (
+                    <MenuItem onClick={() => navigate('/historic')}>Histórico</MenuItem>
+                )}
                 <MenuItem onClick={() => navigate('/')}>Página inicial</MenuItem>
                 <MenuItem onClick={() => navigate('/now-playing')}>Tocando agora</MenuItem>
                 {loginState.state && (

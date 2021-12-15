@@ -23,11 +23,14 @@ export default function LoginPage() {
             return
         }
         loginState.login(user, password)
-        .then(() => toast({
-            title: "Sucesso",
-            description: "Login realizado com sucesso!",
-            status: 'success'
-        }))
+        .then(() => {
+            toast({
+                title: "Sucesso",
+                description: "Login realizado com sucesso!",
+                status: 'success'
+            })
+            navigate('/')
+        })
         .catch((e: Error) => toast({
             title: "Erro durante login",
             description: e.message,
