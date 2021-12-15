@@ -1,8 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import EpisodeModel from "./Episode";
 import UserModel from "./User";
 
 @Entity('listened')
+@Unique('user_episode', ['user', 'episode'])
 export default class ListenedModel {
     @PrimaryGeneratedColumn('increment')
     id: number

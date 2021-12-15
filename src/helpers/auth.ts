@@ -2,10 +2,10 @@ import express from 'express';
 import { jwtVerify } from './jwt';
 import Returner from './Returner';
 
-function handleJWT(jwt: string): any {
+export function handleJWT<T>(jwt: string): T {
     try {
         const verify = jwtVerify(jwt as string)
-        return verify
+        return verify as T
     } catch (e) {
         console.log(e)
         Returner.unauthorized()
