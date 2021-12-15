@@ -13,6 +13,7 @@ type LoginContextState = Maybe<{
         username: string
         is_admin: boolean
     }>
+    jwt: Maybe<string>
 }>
 
 const _LoginContext = createContext<LoginContextState>(null)
@@ -59,7 +60,8 @@ export function LoginContext(props: LoginContextProps) {
             },
             signout() {
                 setJwt(null)
-            }
+            },
+            jwt
         }}>
             {props.children}
         </_LoginContext.Provider>

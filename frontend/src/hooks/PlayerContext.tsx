@@ -1,8 +1,10 @@
 import React, { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { API_BASEURL } from "../constants";
 import { Maybe } from "../utils/Maybe";
+import requestAPI from "./requestAPI";
 import { useEpisode } from "./useEpisode";
 import useInterval from "./useInterval";
+import useProgress from "./useProgress";
 
 type PlayerContextState = Maybe<{
     jumpToItem: (id: number) => void
@@ -10,6 +12,7 @@ type PlayerContextState = Maybe<{
     jumpToPositionDelta: (delta: number) => void
     togglePlayPause: (state?: boolean) => void
     changePlaybackSpeed: (speed: number) => void
+    triggerProgressSave: () => void
     speed: number
     isPaused: boolean,
     position: number,
@@ -28,6 +31,7 @@ type PlayerContextProps = {
 export function PlayerContext(props: PlayerContextProps) {
     const [podId, setPodId] = useState<Maybe<number>>(null)
     const episode = useEpisode(podId)
+    const progress = useProgress(podId || undefined)
     const audioRef = useRef(new Audio())
     const position = audioRef.current.currentTime || 0
     const length = audioRef.current.duration || 1
