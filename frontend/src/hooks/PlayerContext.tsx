@@ -41,11 +41,14 @@ export function PlayerContext(props: PlayerContextProps) {
         console.log(ticker)
     }, [ticker])
     useEffect(() => {
-        console.log("buscando progresso")
-        console.log("position", progress.progress?.position)
-        if (!progress.progress?.position) return
-        audioRef.current.currentTime = progress.progress.position
-    }, [podId, progress.fetcher.isFetched]) // eslint-disable-line
+        if (progress.fetcher.status == 'success') {
+            console.log("buscando progresso")
+            console.log("position", progress.progress?.position)
+            const position = progress.progress?.position
+            if (!position) return
+            audioRef.current.currentTime = position
+        }
+    }, [podId, progress.fetcher.status]) // eslint-disable-line
     useEffect(() => {
         if (podId) {
             audioRef.current.src = `${API_BASEURL}/api/public/episode/${podId}/listen`
