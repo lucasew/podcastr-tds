@@ -24,7 +24,7 @@
     "react-query": "^3.34.2",
     "rss-to-json": "^2.0.2",
     "sqlite3": "^5.0.0",
-    "typeorm": "^0.2.28"
+    "typeorm": "^0.3.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.8",
