@@ -21,7 +21,7 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "react-query": "^3.34.2",
+    "@tanstack/react-query": "^4.0.5",
     "rss-to-json": "^2.0.2",
     "sqlite3": "^5.0.0",
     "typeorm": "^0.3.0"
